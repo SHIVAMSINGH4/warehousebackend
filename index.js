@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
+require("./app/config/db.config");
 const bodyParser = require('body-parser');
 const app = express();
 
 let server = require('http').Server(app);
-
+const hostname = 'http://localhost';
 
 let corsOptions = {
   origin: ["http://localhost:3000"]
@@ -27,7 +28,17 @@ app.use((req, res, next) => {
     next();
 });
 
+
+// simple route
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to warehouse API" });
+});
+
+// routes
+require("./app/routes/userRoutes")(app);
+
+
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  console.log(`Server is running on port ${hostname}:${PORT}`);
 });
