@@ -10,7 +10,8 @@ module.exports = function (app) {
       next();
     });
   
-    app.post("/api/auth/signup",controller.signup);
-    app.get("/api/test/all", controller.test)
+    app.post("/v1/api/auth/signup",controller.signup);
+    app.post("/v1/api/auth/login",controller.signin);
+
    
   };

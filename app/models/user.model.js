@@ -4,6 +4,11 @@ const User = mongoose.model(
   "User",
   new mongoose.Schema({
     username: String,
+    mobile_no:{
+      type: Number,
+      required: true
+
+    },
     email: String,
     password: String,
     roles: [
