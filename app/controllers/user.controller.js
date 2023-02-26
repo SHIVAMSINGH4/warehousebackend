@@ -27,11 +27,11 @@ exports.signup = (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: hash,
-            mobile_no: req.body.mobile_no,
+            mobile_no: req.body.mobile_no
         
         });
         
-        
+
 
         user.save((err)=>{
             if(err){
