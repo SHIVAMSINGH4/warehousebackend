@@ -3,10 +3,13 @@ const mongoose = require("mongoose");
 const User = mongoose.model(
   "User",
   new mongoose.Schema({
-    number: String,
     username: String,
+    mobile_no:{
+      type: Number,
+      required: true
+
+    },
     email: String,
-    OTPVerification: String,
     password: String,
     roles: [
       {
