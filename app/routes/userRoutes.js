@@ -1,6 +1,6 @@
 const userController = require("../controllers/user.controller");
 const productController= require("../controllers/product.controller")
-
+const billController = require("../controllers/bill.controller")
 module.exports = function (app) {
     app.use(function (req, res, next) {
       res.header(
@@ -15,6 +15,10 @@ module.exports = function (app) {
 
     app.get("/v1/api/auth/getAllProduct",productController.getProduct);
     app.post("/v1/api/auth/addNewProduct",productController.addProduct);
+
+
+    app.get("/v1/api/auth/getCustomerBill",billController.getBill);
+    app.post("/v1/api/auth/addCustomerBill",billController.addBill)
 
    
   };
