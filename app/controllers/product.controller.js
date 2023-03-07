@@ -6,7 +6,7 @@ exports.getProduct = (req, res) => {
     Product.find({
         $or:
             [
-                { O_E_REF:  req.query.O_E_REF  },
+                { OE_REF:  req.query.O_E_REF  },
                 { ITEMS_REF:req.query.ITEMS_REF } 
 
             ]

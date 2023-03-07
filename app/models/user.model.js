@@ -9,6 +9,13 @@ const User = mongoose.model(
       required: true
 
     },
+    branch_code: {
+      type: String,
+      required: true,
+      enum: [
+        "Mun01", "DEL01", "GGN01"
+      ]
+    },
     email: String,
     password: String,
     roles: [
