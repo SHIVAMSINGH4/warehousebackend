@@ -13,9 +13,10 @@ module.exports = function (app) {
     app.post("/v1/api/auth/signup",userController.signup);
     app.post("/v1/api/auth/login",userController.signin);
 
-    app.get("/v1/api/auth/getAllProduct",productController.getProduct);
+    app.get("/v1/api/auth/getAllProduct",productController.getAllProduct);
+    app.get("/v1/api/auth/getProductSearching",productController.getProductSearching);
     app.post("/v1/api/auth/addNewProduct",productController.addProduct);
-
+    app.put("/v1/api/auth/updateProduct",productController.updateProduct)
 
     app.get("/v1/api/auth/getCustomerBill",billController.getBill);
     app.post("/v1/api/auth/addCustomerBill",billController.addBill)
