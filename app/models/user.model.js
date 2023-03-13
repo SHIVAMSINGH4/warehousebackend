@@ -13,7 +13,7 @@ const User = mongoose.model(
       type: String,
       required: true,
       enum: [
-        "Mun01", "DEL01", "GGN01"
+        "Mun001", "DEL001", "GGN001"
       ]
     },
     email: String,
