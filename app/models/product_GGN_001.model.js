@@ -7,7 +7,7 @@ const Product = mongoose.model(
     {
       "SAPREF": String,
       "ITEMS_REF": String,
-      "O_E_REF": String,
+      "OE_REF": String,
       "REF_TYPE": String,
       "Descripation": String,
       "APPLICATION": String,

@@ -44,9 +44,10 @@ exports.getProductSearching = (req, res) => {
 
 
 exports.addProduct = (req, res) => {
-    Product_del_001.find({ OE_REF: req.body.OE_REF })
+    Product_del_001.find({ ITEMS_REF: req.body.ITEMS_REF })
         .exec((err, data) => {
             if (err) {
+                console.log(error)
                 res.status(500).send({ message: err });
                 return;
             }
@@ -56,16 +57,19 @@ exports.addProduct = (req, res) => {
                     data
                 });
             }
-            const pro = new Product_del_001(req.body)
-            pro.save((err) => {
-                if (err) {
-                    res.status(500).send({ error: err })
-                }
-                res.status(200).send({
-                    message: "Product Added"
-                });
-
-            })
+            else{
+                const pro = new Product_del_001(req.body)
+                pro.save((err) => {
+                    if (err) {
+                        res.status(500).send({ error: err })
+                    }
+                    res.status(200).send({
+                        message: "Product Added"
+                    });
+    
+                })
+            }
+            
 
         })
 

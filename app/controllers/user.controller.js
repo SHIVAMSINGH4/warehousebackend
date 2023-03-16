@@ -86,6 +86,7 @@ exports.signin = (req, res) => {
             }
         );
 
+        
         res.status(200).send({
             id: user._id,
             branch_code:user.branch_code,

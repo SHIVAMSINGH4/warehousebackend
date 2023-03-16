@@ -56,16 +56,19 @@ exports.addProduct = (req, res) => {
                     data
                 });
             }
-            const pro = new Product_mun_001(req.body)
-            pro.save((err) => {
-                if (err) {
-                    res.status(500).send({ error: err })
-                }
-                res.status(200).send({
-                    message: "Product Added"
-                });
-
-            })
+            else{
+                const pro = new Product_mun_001(req.body)
+                pro.save((err) => {
+                    if (err) {
+                        res.status(500).send({ error: err })
+                    }
+                    res.status(200).send({
+                        message: "Product Added"
+                    });
+    
+                })
+            }
+            
 
         })
 
