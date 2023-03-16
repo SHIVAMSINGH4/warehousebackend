@@ -97,6 +97,4 @@ exports.deleteProduct = async (req, res) => {
         {ITEMS_REF: req.query.ITEMS_REF} ,        
         )
     res.send('Item Deleted!');
-    
-    
 }
