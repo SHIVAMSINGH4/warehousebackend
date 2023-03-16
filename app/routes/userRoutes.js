@@ -13,9 +13,22 @@ module.exports = function (app) {
     app.post("/v1/api/auth/signup",userController.signup);
     app.post("/v1/api/auth/login",userController.signin);
 
-    app.get("/v1/api/auth/getAllProduct",productController.getProduct);
-    app.post("/v1/api/auth/addNewProduct",productController.addProduct);
+    app.get("/v1/api/auth/getAllProduct/MUN_001",productController_mun_001.getAllProduct);
+    app.get("/v1/api/auth/getProductSearching/MUN_001",productController_mun_001.getProductSearching);
+    app.post("/v1/api/auth/addNewProduct/MUN_001",productController_mun_001.addProduct);
+    app.put("/v1/api/auth/updateProduct/MUN_001",productController_mun_001.updateProduct)
 
+    app.get("/v1/api/auth/getAllProduct/DEL_001",productController_del_001.getAllProduct);
+    app.get("/v1/api/auth/getProductSearching/DEL_001",productController_del_001.getProductSearching);
+    app.post("/v1/api/auth/addNewProduct/DEL_001",productController_del_001.addProduct);
+    app.put("/v1/api/auth/updateProduct/DEL_001",productController_del_001.updateProduct)
+
+
+    app.get("/v1/api/auth/getAllProduct/GGN_001",productController_ggn_001.getAllProduct);
+    app.get("/v1/api/auth/getProductSearching/GGN_001",productController_ggn_001.getProductSearching);
+    app.post("/v1/api/auth/addNewProduct/GGN_001",productController_ggn_001.addProduct);
+    app.put("/v1/api/auth/updateProduct/GGN_001",productController_ggn_001.updateProduct)
+    
 
     app.get("/v1/api/auth/getCustomerBill",billController.getBill);
     app.post("/v1/api/auth/addCustomerBill",billController.addBill)
