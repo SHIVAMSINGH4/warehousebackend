@@ -1,5 +1,7 @@
 const userController = require("../controllers/user.controller");
-const productController= require("../controllers/product.controller")
+const productController_mun_001= require("../controllers/product_MUN_001.controller")
+const productController_del_001= require("../controllers/product_DEL_001.controller")
+const productController_ggn_001= require("../controllers/product_GGN_001.controller")
 const billController = require("../controllers/bill.controller")
 module.exports = function (app) {
     app.use(function (req, res, next) {

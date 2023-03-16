@@ -1,11 +1,11 @@
 const { query } = require("express");
-const Product_ggn_001 = require("../models/product_GGN_001.model")
+const Product_mun_001 = require("../models/product_MUN_001.model")
 
 
 
 exports.getAllProduct = (req, res) => {
 
-    Product_ggn_001.find()
+    Product_mun_001.find()
         .exec((err, data) => {
             if (err) {
                 res.status(500).send({ message: err });
@@ -21,7 +21,7 @@ exports.getAllProduct = (req, res) => {
 exports.getProductSearching = (req, res) => {
     console.log(req.query.ITEMS_REF)
     console.log(req.query.OE_REF)
-    Product_ggn_001.find({
+    Product_mun_001.find({
         $or:
             [
                 { OE_REF: req.query.OE_REF },
@@ -44,7 +44,7 @@ exports.getProductSearching = (req, res) => {
 
 
 exports.addProduct = (req, res) => {
-    Product_ggn_001.find({ OE_REF: req.body.OE_REF })
+    Product_mun_001.find({ OE_REF: req.body.OE_REF })
         .exec((err, data) => {
             if (err) {
                 res.status(500).send({ message: err });
@@ -57,7 +57,7 @@ exports.addProduct = (req, res) => {
                 });
             }
             else{
-                const pro = new Product_ggn_001(req.body)
+                const pro = new Product_mun_001(req.body)
                 pro.save((err) => {
                     if (err) {
                         res.status(500).send({ error: err })
@@ -79,7 +79,7 @@ exports.addProduct = (req, res) => {
 exports.updateProduct = async (req, res) => {
 
     console.log(req.body)
-    await Product_ggn_001.findOneAndUpdate(
+    await Product_mun_001.findOneAndUpdate(
         {OE_REF: req.body.OE_REF,ITEMS_REF: req.body.ITEMS_REF} ,
         {$set:{
             QTY:req.body.QUANTITY
@@ -90,17 +90,6 @@ exports.updateProduct = async (req, res) => {
     
 }
 
-<<<<<<< HEAD
-exports.deleteProduct = async (req, res) => {
-  
-    console.log(req.body)
-    await Product_ggn_001.findOneAndDelete(
-        {ITEMS_REF: req.query.ITEMS_REF} ,        
-        )
-    res.send('Item Deleted!');
-}
-=======
 
 
 
->>>>>>> a403533307c7fd4383adb734555774e3551279fa

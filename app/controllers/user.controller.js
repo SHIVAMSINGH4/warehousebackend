@@ -27,7 +27,8 @@ exports.signup = (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: hash,
-            mobile_no: req.body.mobile_no
+            mobile_no: req.body.mobile_no,
+            branch_code:req.body.branch_code
         
         });
         
@@ -85,8 +86,10 @@ exports.signin = (req, res) => {
             }
         );
 
+        
         res.status(200).send({
             id: user._id,
+            branch_code:user.branch_code,
             username: user.username,
             number: user.number,
             access: token,
