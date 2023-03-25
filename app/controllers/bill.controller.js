@@ -1,9 +1,11 @@
 const Bill = require("../models/bill.model")
 const Customer = require("../models/customer.model")
-const request = require('request')
-const Product_mun_001 = require("../models/product_DEL_001.model")
+const Product_mun_001 = require("../models/product_MUN_001.model")
+const Product_ggn_001 = require("../models/product_GGN_001.model")
+const Product_del_001 = require("../models/product_DEL_001.model")
+
 exports.getBill = (req, res) => {
-    Bill.find({}, { "__v": 0, "_id": 0 })
+    Bill.find({Bill_no:req.query.bill}, { "__v": 0, "_id": 0 })
 
         .exec((err, data) => {
             if (err) {
@@ -19,9 +21,9 @@ exports.getBill = (req, res) => {
 
 
 exports.addBill = async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     await Customer.find({ phoneNO: req.body.phoneNO })
-        .exec((err, data) => {
+        .exec(async (err, data) => {
             if (err) {
                 res.status(500).send({ message: err });
                 return;
@@ -49,10 +51,13 @@ exports.addBill = async (req, res) => {
                                     billNo: data.length + 1
                                 }
                             }
-                        ).exec((res1) => {
+                        ).exec(async(res1) => {
                             if (err) {
                                 res.status(500).send({ error: res1 })
                             }
+                            await apicall(req.body.PRODUCTS[0].BRANCH_CODE, req.body.PRODUCTS).then((d) => {
+                                console.log(d)
+                            })
                             res.status(200).send({
                                 message: "Bill Generated",
                                 billno: data.length + 1,
@@ -68,7 +73,7 @@ exports.addBill = async (req, res) => {
             }
             else {
 
-                Bill.find().exec((err, data) => {
+                await Bill.find().exec( (err, data) => {
                     const bill = new Bill({
                         "PRODUCTS": req.body.PRODUCTS,
                         "Bill_no": data.length + 1
@@ -81,10 +86,13 @@ exports.addBill = async (req, res) => {
                                 billNo: data.length + 1
                             }
                         }
-                    ).exec((res1) => {
+                    ).exec(async(res1) => {
                         if (err) {
                             res.status(500).send({ error: res1 })
                         }
+                        await apicall(req.body.PRODUCTS[0].BRANCH_CODE, req.body.PRODUCTS).then((d) => {
+                            console.log(d)
+                        })
                         res.status(200).send({
                             message: "Bill Generated",
                             billno: data.length + 1,
@@ -97,7 +105,7 @@ exports.addBill = async (req, res) => {
                 })
 
                 // request.post('http://localhost:8080/v1/api/auth/updateProduct/${req.body.PRODUCTS[0].LOCATION}', body:req.body.PRODUCTS)
-                apicall(req.body.PRODUCTS[0].LOCATION, req.body.PRODUCTS)
+
 
             }
 
@@ -105,20 +113,70 @@ exports.addBill = async (req, res) => {
 }
 
 function apicall(loc, bod_y) {
-    if (loc === "MUN001") {
-        // console.log(bod_y)
-        bod_y.map((d) => {
-            console.log(d)
-            Product_mun_001.findOneAndUpdate(
-                { ITEMS_REF: "1" },
-                {
-                    $set: {
-                        QTY: 10
-                    }
-                }
-            )
-            console.log()
-        })
+    return new Promise((resolve, reject) => {
+        if (loc === "MUN001") {
+            return bod_y.map((d) => {
+                Product_mun_001.findOneAndUpdate(
+                    { ITEMS_REF: d.ITEMS_REF },
+                    { $set: { SALES: d.QUANTITY } },
+                    { new: true }, (err, doc) => {
+                        if (err) {
+                            console.log("Something wrong when updating data!");
+                        }
 
-    }
+                        resolve(doc)
+                    }
+                )
+            })
+        }
+        else if (loc === "GGN001") {
+            return bod_y.map((d) => {
+                Product_ggn_001.findOneAndUpdate(
+                    { ITEMS_REF: d.ITEMS_REF },
+                    { $set: { SALES: d.QUANTITY } },
+                    { new: true }, (err, doc) => {
+                        if (err) {
+                            console.log("Something wrong when updating data!");
+                        }
+
+                        resolve(doc)
+                    }
+                )
+
+            })
+
+        }
+        else {
+            return bod_y.map((d) => {
+                Product_del_001.findOneAndUpdate(
+                    { ITEMS_REF: d.ITEMS_REF },
+                    { $set: { SALES: d.QUANTITY } },
+                    { new: true }, (err, doc) => {
+                        if (err) {
+                            console.log("Something wrong when updating data!");
+                        }
+
+                        resolve(doc)
+                    }
+                )
+                
+            })
+        }
+    })
+
+}
+
+
+exports.bill_by_customer = async (req, res) => {
+    console.log(typeof(req.query.phone_no))
+    Customer.find({"phoneNO": req.query.phone_no})
+    .exec((err, data) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        res.status(200).send({
+            data
+        });
+    })
 }

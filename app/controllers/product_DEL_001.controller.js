@@ -77,7 +77,7 @@ exports.addProduct = (req, res) => {
 
 }
 
-exports.updateProduct = async (req, res) => {
+exports.updateProductQuantity = async (req, res) => {
 
     console.log(req.body)
     await Product_del_001.findOneAndUpdate(
@@ -91,6 +91,28 @@ exports.updateProduct = async (req, res) => {
     
 }
 
+
+exports.updateFullProduct = async (req, res) => {
+    try {
+        console.log(req.body)
+        await Product_del_001.findOneAndReplace(
+            { ITEMS_REF: req.body.ITEMS_REF }, req.body)
+            .then((err, data) => {
+                if (err) {
+                    console.log(err)
+                    res.status(500).send({ error: err })
+                }
+                res.status(200).send({
+                    data
+                });
+            })
+    }
+    catch (e) {
+        console.log(e)
+    }
+
+
+}
 
 
 

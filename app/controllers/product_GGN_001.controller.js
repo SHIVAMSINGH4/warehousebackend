@@ -56,7 +56,7 @@ exports.addProduct = (req, res) => {
                     data
                 });
             }
-            else{
+            else {
                 const pro = new Product_ggn_001(req.body)
                 pro.save((err) => {
                     if (err) {
@@ -65,10 +65,10 @@ exports.addProduct = (req, res) => {
                     res.status(200).send({
                         message: "Product Added"
                     });
-    
+
                 })
             }
-            
+
 
         })
 
@@ -76,20 +76,44 @@ exports.addProduct = (req, res) => {
 
 }
 
-exports.updateProduct = async (req, res) => {
+exports.updateProductQuantity = async (req, res) => {
 
     console.log(req.body)
     await Product_ggn_001.findOneAndUpdate(
-        {OE_REF: req.body.OE_REF,ITEMS_REF: req.body.ITEMS_REF} ,
-        {$set:{
-            QTY:req.body.QUANTITY
-        }}
-        )
+        { OE_REF: req.body.OE_REF, ITEMS_REF: req.body.ITEMS_REF },
+        {
+            $set: {
+                SALES: req.body.QUANTITY
+            }
+        }
+    )
     res.send('Item Updated!');
-    
-    
+
+
 }
 
+
+exports.updateFullProduct = async (req, res) => {
+    try {
+        console.log(req.body)
+        await Product_ggn_001.findOneAndReplace(
+            { ITEMS_REF: req.body.ITEMS_REF }, req.body)
+            .then((err, data) => {
+                if (err) {
+                    console.log(err)
+                    res.status(500).send({ error: err })
+                }
+                res.status(200).send({
+                    data
+                });
+            })
+    }
+    catch (e) {
+        console.log(e)
+    }
+
+
+}
 
 
 
