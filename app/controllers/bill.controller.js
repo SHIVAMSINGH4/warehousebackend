@@ -5,17 +5,47 @@ const Product_ggn_001 = require("../models/product_GGN_001.model")
 const Product_del_001 = require("../models/product_DEL_001.model")
 
 exports.getBill = (req, res) => {
-    Bill.find({Bill_no:req.query.bill}, { "__v": 0, "_id": 0 })
+    try {
+        Bill.find({ Bill_no: req.query.bill }, { "__v": 0, "_id": 0 })
 
-        .exec((err, data) => {
-            if (err) {
-                res.status(500).send({ message: err });
-                return;
-            }
-            res.status(200).send({
-                data
-            });
-        })
+            .exec(async(err, data) => {
+                if (err) {
+                    res.status(500).send({ message: err });
+                    return;
+                }
+                else if (data) {
+                    if (req.query.loc == data[0].PRODUCTS[0].LOCATION) {
+                        console.log(req.query.bill)
+                        await Customer.find({billNo:{$in:[req.query.bill]}}).exec((err,d)=>{
+                            console.log(d)
+                            console.log(err)
+                        })
+                        
+                        res.status(200).send({
+                            data
+                        });
+                    }
+                    else {
+                        res.status(200).send({
+                            "MSG": "Data Not Found For Location"
+
+                        });
+                    }
+
+
+                }
+                else {
+                    res.status(200).send({
+                        "MSG": "Data Not Found"
+                    });
+                }
+
+            })
+    }
+    catch (e) {
+        console.log(e)
+    }
+
 
 }
 
@@ -51,7 +81,7 @@ exports.addBill = async (req, res) => {
                                     billNo: data.length + 1
                                 }
                             }
-                        ).exec(async(res1) => {
+                        ).exec(async (res1) => {
                             if (err) {
                                 res.status(500).send({ error: res1 })
                             }
@@ -73,7 +103,7 @@ exports.addBill = async (req, res) => {
             }
             else {
 
-                await Bill.find().exec( (err, data) => {
+                await Bill.find().exec((err, data) => {
                     const bill = new Bill({
                         "PRODUCTS": req.body.PRODUCTS,
                         "Bill_no": data.length + 1
@@ -86,7 +116,7 @@ exports.addBill = async (req, res) => {
                                 billNo: data.length + 1
                             }
                         }
-                    ).exec(async(res1) => {
+                    ).exec(async (res1) => {
                         if (err) {
                             res.status(500).send({ error: res1 })
                         }
@@ -159,7 +189,7 @@ function apicall(loc, bod_y) {
                         resolve(doc)
                     }
                 )
-                
+
             })
         }
     })
@@ -168,38 +198,38 @@ function apicall(loc, bod_y) {
 
 
 exports.bill_by_customer = async (req, res) => {
-    console.log(typeof(req.query.phone_no))
-    Customer.find({"phoneNO": req.query.phone_no})
-    .exec((err, data) => {
-        if (err) {
-            res.status(500).send({ message: err });
-            return;
-        }
-        res.status(200).send({
-            data
-        });
-    })
+    console.log(typeof (req.query.phone_no))
+    Customer.find({ "phoneNO": req.query.phone_no })
+        .exec((err, data) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+            res.status(200).send({
+                data
+            });
+        })
 }
 
 
 exports.bill_by_date = async (req, res) => {
     Bill.find({
         createdAt: {
-                '$gte': new Date(req.body.start_date),
-                '$lt': new Date(req.body.end_date)
+            '$gte': new Date(req.body.start_date),
+            '$lt': new Date(req.body.end_date)
         }
     })
-    .exec((err, data) => {
-        if (err) {
-            res.status(500).send({ message: err });
-        }
-        else{
-            ret = data.filter((d)=>{
-               return d.PRODUCTS[0].ITEMS_REF ==req.body.ITEMS_REF      
-            })
-            res.status(200).send({
-                ret
-            });
-        }
-    })
+        .exec((err, data) => {
+            if (err) {
+                res.status(500).send({ message: err });
+            }
+            else {
+                ret = data.filter((d) => {
+                    return d.PRODUCTS[0].ITEMS_REF == req.body.ITEMS_REF
+                })
+                res.status(200).send({
+                    ret
+                });
+            }
+        })
 }
