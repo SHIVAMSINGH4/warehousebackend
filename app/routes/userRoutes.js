@@ -34,5 +34,6 @@ module.exports = function (app) {
     app.get("/v1/api/auth/getCustomerBill",billController.getBill);
     app.post("/v1/api/auth/addCustomerBill",billController.addBill)
     app.get("/v1/api/auth/getCustomerBillHistory",billController.bill_by_customer)
-   
+    app.post("/v1/api/auth/getBill_ByDate",billController.bill_by_date)
+    
   };

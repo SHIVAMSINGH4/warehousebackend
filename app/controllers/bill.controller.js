@@ -180,3 +180,26 @@ exports.bill_by_customer = async (req, res) => {
         });
     })
 }
+
+
+exports.bill_by_date = async (req, res) => {
+    Bill.find({
+        createdAt: {
+                '$gte': new Date(req.body.start_date),
+                '$lt': new Date(req.body.end_date)
+        }
+    })
+    .exec((err, data) => {
+        if (err) {
+            res.status(500).send({ message: err });
+        }
+        else{
+            ret = data.filter((d)=>{
+               return d.PRODUCTS[0].ITEMS_REF ==req.body.ITEMS_REF      
+            })
+            res.status(200).send({
+                ret
+            });
+        }
+    })
+}

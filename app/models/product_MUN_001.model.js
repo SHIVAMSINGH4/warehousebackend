@@ -20,7 +20,7 @@ const Product = mongoose.model(
       "SALES": Number,
       "QTY": Number,
       "STORE": String
-    }
+    },{timestamps:true}
   )
 );
 

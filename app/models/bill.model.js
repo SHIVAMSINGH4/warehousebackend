@@ -9,10 +9,11 @@ const Bill = mongoose.model(
             "LOCATION": String,
             "QUANTITY": Number
         }],
-        "Bill_no": Number
+        "Bill_no": Number,
+        
 
 
-    })
+    },{timestamps:true})
 );
 
 module.exports = Bill;
