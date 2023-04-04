@@ -44,14 +44,14 @@ exports.getProductSearching = (req, res) => {
 
 
 exports.addProduct = (req, res) => {
-    Product_del_001.find({ ITEMS_REF: req.body.ITEMS_REF })
+    Product_del_001.find({ OE_REF: req.body.OE_REF })
         .exec((err, data) => {
             if (err) {
                 console.log(error)
                 res.status(500).send({ message: err });
                 return;
             }
-            else if (data.length > 0) {
+            else if (data.length > 0 && req.body.ITEMS_REF==data.ITEMS_REF) {
                 res.status(200).send({
                     "Message": "Data Already exist, you can only update that data",
                     data
@@ -93,4 +93,16 @@ exports.updateProduct = async (req, res) => {
 
 
 
+exports.DeleteProduct = async(req,res)=>{
+    try{
+        await Product_del_001.findOneAndDelete({ITEMS_REF:req.query.ITEMS_REF}).then(d=>res.status(200).send(
+            {
+                message:d
+            }
+        ))
+    }
+    catch(err){
+        res.status(500).send({error:err})
+    }
+}
 

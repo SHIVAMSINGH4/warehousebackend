@@ -49,8 +49,8 @@ exports.signup = (req, res) => {
 
 
 exports.signin = (req, res) => {
-    if (req.body.mobile_no ==""){
-        res.status(500).send({error: "Mobile number can't be blank"})
+    if (!req.body.hasOwnProperty('mobile_no') || req.body.mobile_no ==""){
+        res.status(500).send({error: "Mobile number can't be blank or has not sent proper key in body"})
     }
     else if(req.body.password ==""){
         res.status(500).send({error: "Password can't be blank"})

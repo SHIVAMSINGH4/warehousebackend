@@ -50,7 +50,7 @@ exports.addProduct = (req, res) => {
                 res.status(500).send({ message: err });
                 return;
             }
-            else if (data.length > 0) {
+            else if (data.length > 0 && req.body.ITEMS_REF==data.ITEMS_REF) {
                 res.status(200).send({
                     "Message": "Data Already exist, you can only update that data",
                     data

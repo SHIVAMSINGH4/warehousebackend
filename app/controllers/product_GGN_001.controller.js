@@ -2,9 +2,7 @@ const { query } = require("express");
 const Product_ggn_001 = require("../models/product_GGN_001.model")
 
 
-
 exports.getAllProduct = (req, res) => {
-
     Product_ggn_001.find()
         .exec((err, data) => {
             if (err) {
@@ -15,8 +13,8 @@ exports.getAllProduct = (req, res) => {
                 data
             });
         })
-
 }
+
 
 exports.getProductSearching = (req, res) => {
     console.log(req.query.ITEMS_REF)
@@ -26,10 +24,8 @@ exports.getProductSearching = (req, res) => {
             [
                 { OE_REF: req.query.OE_REF },
                 { ITEMS_REF: req.query.ITEMS_REF }
-
             ]
     })
-
         .exec((err, data) => {
             if (err) {
                 res.status(500).send({ message: err });
@@ -39,7 +35,6 @@ exports.getProductSearching = (req, res) => {
                 data
             });
         })
-
 }
 
 
@@ -50,7 +45,7 @@ exports.addProduct = (req, res) => {
                 res.status(500).send({ message: err });
                 return;
             }
-            else if (data.length > 0) {
+            else if (data.length > 0 && req.body.ITEMS_REF==data.ITEMS_REF) {
                 res.status(200).send({
                     "Message": "Data Already exist, you can only update that data",
                     data
@@ -68,16 +63,11 @@ exports.addProduct = (req, res) => {
     
                 })
             }
-            
-
         })
-
-
-
 }
 
-exports.updateProduct = async (req, res) => {
 
+exports.updateProductQuantity = async (req, res) => {
     console.log(req.body)
     await Product_ggn_001.findOneAndUpdate(
         {OE_REF: req.body.OE_REF,ITEMS_REF: req.body.ITEMS_REF} ,
@@ -86,21 +76,42 @@ exports.updateProduct = async (req, res) => {
         }}
         )
     res.send('Item Updated!');
-    
-    
 }
 
-<<<<<<< HEAD
-exports.deleteProduct = async (req, res) => {
-  
-    console.log(req.body)
-    await Product_ggn_001.findOneAndDelete(
-        {ITEMS_REF: req.query.ITEMS_REF} ,        
-        )
-    res.send('Item Deleted!');
+
+exports.updateFullProduct = async (req, res) => {
+    try {
+        console.log(req.body)
+        await Product_ggn_001.findOneAndReplace(
+            { ITEMS_REF: req.body.ITEMS_REF }, req.body)
+            .then((err, data) => {
+                if (err) {
+                    console.log(err)
+                    res.status(500).send({ error: err })
+                }
+                res.status(200).send({
+                    data
+                });
+            })
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
 =======
 
 
+exports.DeleteProduct = async(req,res)=>{
+    try{
+        await Product_ggn_001.findOneAndDelete({ITEMS_REF:req.query.ITEMS_REF}).then(d=>res.status(200).send(
+            {
+                message:d
+            }
+        ))
+    }
+    catch(err){
+        res.status(500).send({error:err})
+    }
+}
 
 >>>>>>> a403533307c7fd4383adb734555774e3551279fa
