@@ -2,6 +2,7 @@ const User = require("../models/user.model")
 const config = require("../config/auth.config");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Customer = require("../models/customer.model");
 
 exports.signup = (req, res) => {
     
@@ -100,3 +101,34 @@ exports.signin = (req, res) => {
 };
 
 
+exports.Lookup = async function (req,res){
+    console.log(req.query.phoneNO)
+    const data = await Customer.aggregate([{
+        $match:{phoneNO:req.query.phoneNO},
+    },
+    // {
+    //     $lookup:{
+    //         from:"bills",
+    //         localField:'billNo',
+    //         foreignField:'Bill_no',
+    //         as:'dataSet'
+    //     }
+    // }
+    {
+        $lookup:{
+            from:"bills",
+            let:{"bill_no":"$billNo"},
+            pipeline:[
+                {
+                    $match:{
+                        $expr:{$eq:["$Bill_no","$bill_no"]}
+                    }
+                },
+            ],
+            as:'dataSet'
+        }
+    },
+    ])
+    console.log(data)
+    res.send({body:data[0]})
+}

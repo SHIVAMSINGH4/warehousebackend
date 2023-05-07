@@ -98,7 +98,7 @@ exports.updateFullProduct = async (req, res) => {
         console.log(e)
     }
 }
-=======
+
 
 
 exports.DeleteProduct = async(req,res)=>{
@@ -114,4 +114,4 @@ exports.DeleteProduct = async(req,res)=>{
     }
 }
 
->>>>>>> a403533307c7fd4383adb734555774e3551279fa
+
