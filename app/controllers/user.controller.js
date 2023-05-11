@@ -106,28 +106,29 @@ exports.Lookup = async function (req,res){
     const data = await Customer.aggregate([{
         $match:{phoneNO:req.query.phoneNO},
     },
-    // {
-    //     $lookup:{
-    //         from:"bills",
-    //         localField:'billNo',
-    //         foreignField:'Bill_no',
-    //         as:'dataSet'
-    //     }
-    // }
     {
         $lookup:{
             from:"bills",
-            let:{"bill_no":"$billNo"},
-            pipeline:[
-                {
-                    $match:{
-                        $expr:{$eq:["$Bill_no","$bill_no"]}
-                    }
-                },
-            ],
+            localField:'billNo',
+            foreignField:'Bill_no',
             as:'dataSet'
         }
     },
+    {$unwind:'$dataset'}
+    // {
+    //     $lookup:{
+    //         from:"bills",
+    //         let:{"bill_no":"$billNo"},
+    //         pipeline:[
+    //             {
+    //                 $match:{
+    //                     $expr:{$eq:["$Bill_no","$$bill_no"]}
+    //                 }
+    //             },
+    //         ],
+    //         as:'dataSet'
+    //     }
+    // },
     ])
     console.log(data)
     res.send({body:data[0]})
